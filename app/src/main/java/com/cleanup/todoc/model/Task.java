@@ -1,24 +1,34 @@
 package com.cleanup.todoc.model;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 /**
  * <p>Model for the tasks of the application.</p>
  *
  * @author Gaëtan HERFRAY
  */
+@Entity(tableName = "task_table")
 public class Task {
     /**
      * The unique identifier of the task
      */
+    @PrimaryKey (autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "id")
     private long id;
 
     /**
      * The unique identifier of the project associated to the task
      */
+    @NonNull
+    @ColumnInfo(name = "projectId")
     private long projectId;
 
     /**
@@ -27,26 +37,27 @@ public class Task {
     // Suppress warning because setName is called in constructor
     @SuppressWarnings("NullableProblems")
     @NonNull
+    @ColumnInfo(name = "name")
     private String name;
 
     /**
      * The timestamp when the task has been created
      */
+    @NonNull
+    @ColumnInfo(name = "creationTimestamp")
     private long creationTimestamp;
 
     /**
      * Instantiates a new Task.
      *
-     * @param id                the unique identifier of the task to set
      * @param projectId         the unique identifier of the project associated to the task to set
      * @param name              the name of the task to set
      * @param creationTimestamp the timestamp when the task has been created to set
      */
-    public Task(long id, long projectId, @NonNull String name, long creationTimestamp) {
-        this.setId(id);
-        this.setProjectId(projectId);
-        this.setName(name);
-        this.setCreationTimestamp(creationTimestamp);
+    public Task(long projectId, @NonNull String name, long creationTimestamp) {
+        this.projectId = projectId;
+        this.name = name;
+        this.creationTimestamp = creationTimestamp;
     }
 
     /**
@@ -54,25 +65,27 @@ public class Task {
      *
      * @return the unique identifier of the task
      */
-    public long getId() {
-        return id;
-    }
+    public long getId() { return id; }
 
     /**
      * Sets the unique identifier of the task.
      *
      * @param id the unique idenifier of the task to set
      */
-    private void setId(long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
+
+    public long getProjectId() {
+        return projectId;
+    }
     /**
      * Sets the unique identifier of the project associated to the task.
      *
      * @param projectId the unique identifier of the project associated to the task to set
      */
-    private void setProjectId(long projectId) {
+    public void setProjectId(long projectId) {
         this.projectId = projectId;
     }
 
@@ -101,7 +114,7 @@ public class Task {
      *
      * @param name the name of the task to set
      */
-    private void setName(@NonNull String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
@@ -110,8 +123,12 @@ public class Task {
      *
      * @param creationTimestamp the timestamp when the task has been created to set
      */
-    private void setCreationTimestamp(long creationTimestamp) {
+    public void setCreationTimestamp(long creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
+    }
+
+    public long getCreationTimestamp() {
+        return creationTimestamp;
     }
 
     /**
