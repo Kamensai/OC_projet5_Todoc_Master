@@ -6,6 +6,7 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -19,6 +20,9 @@ public interface TaskDao {
 
     @Query("DELETE FROM task_table")
     void deleteAll();
+
+    @Delete
+    void delete(Task task);
 
     @Query("SELECT * FROM task_table ORDER BY name ASC")
     LiveData<List<Task>> getAlphabetizedWords();
