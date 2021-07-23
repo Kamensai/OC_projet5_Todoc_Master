@@ -1,5 +1,6 @@
 package com.cleanup.todoc.service;
 
+import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 import java.util.List;
@@ -25,5 +26,13 @@ public interface TaskDao {
     void delete(Task task);
 
     @Query("SELECT * FROM task_table ORDER BY name ASC")
-    LiveData<List<Task>> getAlphabetizedWords();
+    LiveData<List<Task>> getAlphabetizedTasks();
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insert(Project project);
+
+    @Query("SELECT * FROM project_table ORDER BY name ASC")
+    LiveData<List<Project>> getAlphabetizedProjects();
+
+
 }

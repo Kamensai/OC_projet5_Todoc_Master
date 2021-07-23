@@ -2,8 +2,9 @@ package com.cleanup.todoc;
 
 import android.app.Application;
 
+import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
-import com.cleanup.todoc.room.TaskRoomDatabase;
+import com.cleanup.todoc.room.RoomDatabase;
 import com.cleanup.todoc.service.TaskDao;
 
 import java.util.List;
@@ -14,13 +15,15 @@ import androidx.lifecycle.Observer;
 
 public class TaskRepository {
     private TaskDao mTaskDao;
+    private LiveData<List<Project>> mAllProjects;
     private MutableLiveData<List<Task>> mAllTasks = new MutableLiveData<>();
 
 
     public TaskRepository(Application application) {
-        TaskRoomDatabase db = TaskRoomDatabase.getDatabase(application);
+        RoomDatabase db = RoomDatabase.getDatabase(application);
         mTaskDao = db.taskDao();
         // mAllTasks = mTaskDao.getAlphabetizedWords();
+        mAllProjects = mTaskDao.getAlphabetizedProjects();
     }
 
     // Room executes all queries on a separate thread.
@@ -29,8 +32,13 @@ public class TaskRepository {
         return mAllTasks;
     }
 
+    public LiveData<List<Project>> getAllProjects() {
+        return mAllProjects;
+    }
+
+
     public void getTasks(){
-        mTaskDao.getAlphabetizedWords().observeForever(new Observer<List<Task>>() {
+        mTaskDao.getAlphabetizedTasks().observeForever(new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 mAllTasks.setValue(tasks);
@@ -41,13 +49,13 @@ public class TaskRepository {
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
     public void insert(final Task task) {
-        TaskRoomDatabase.databaseWriteExecutor.execute(() -> {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
             mTaskDao.insert(task);
         });
     }
 
     public void remove(final Task task) {
-        TaskRoomDatabase.databaseWriteExecutor.execute(() -> {
+        RoomDatabase.databaseWriteExecutor.execute(() -> {
             mTaskDao.delete(task);
         });
     }

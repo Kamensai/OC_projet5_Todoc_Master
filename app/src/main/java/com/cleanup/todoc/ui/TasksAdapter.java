@@ -4,6 +4,8 @@ import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleanup.todoc.R;
@@ -11,6 +13,7 @@ import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -29,6 +32,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     @NonNull
     private List<Task> tasks = new ArrayList<>();
 
+    @NonNull
+    private List<Project> projects = new ArrayList<>();
+
     /**
      * The listener for when a task needs to be deleted
      */
@@ -43,14 +49,41 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         this.deleteTaskListener = deleteTaskListener;
     }
 
+    void updateProjects(@NonNull final List<Project> projects) {
+        this.projects = projects;
+        notifyDataSetChanged();
+    }
+
     /**
      * Updates the list of tasks the adapter deals with.
      *
      * @param tasks the list of tasks the adapter deals with to set
      */
-    void updateTasks(@NonNull final List<Task> tasks) {
+    void updateAndSortTasks(@NonNull final List<Task> tasks, String sortMethod) {
         this.tasks = tasks;
+        sortTasks(sortMethod);
         notifyDataSetChanged();
+    }
+
+    void sortTasks(String sortMethod){
+        if(!tasks.isEmpty()) {
+            switch (sortMethod) {
+                case "ALPHABETICAL":
+                    Collections.sort(tasks, new Task.TaskAZComparator());
+                    break;
+                case "ALPHABETICAL_INVERTED":
+                    Collections.sort(tasks, new Task.TaskZAComparator());
+                    break;
+                case "RECENT_FIRST":
+                    Collections.sort(tasks, new Task.TaskRecentComparator());
+                    break;
+                case "OLD_FIRST":
+                    Collections.sort(tasks, new Task.TaskOldComparator());
+                    break;
+                default:break;
+            }
+            notifyDataSetChanged();
+        }
     }
 
     @NonNull
@@ -149,7 +182,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
             lblTaskName.setText(task.getName());
             imgDelete.setTag(task);
 
-            final Project taskProject = task.getProject();
+            final Project taskProject = task.getProject(projects);
             if (taskProject != null) {
                 imgProject.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
                 lblProjectName.setText(taskProject.getName());

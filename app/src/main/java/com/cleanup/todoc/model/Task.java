@@ -3,6 +3,7 @@ package com.cleanup.todoc.model;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -95,8 +96,8 @@ public class Task {
      * @return the project associated to the task
      */
     @Nullable
-    public Project getProject() {
-        return Project.getProjectById(projectId);
+    public Project getProject(List<Project> projects) {
+        return Project.getProjectById(projectId, projects);
     }
 
     /**

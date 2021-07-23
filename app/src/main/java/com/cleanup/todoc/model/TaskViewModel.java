@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.cleanup.todoc.TaskRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.AndroidViewModel;
@@ -17,6 +18,8 @@ public class TaskViewModel extends AndroidViewModel {
 
     private TaskRepository mRepository;
 
+    private final LiveData<List<Project>> mAllProjects;
+
     private MutableLiveData<List<Task>> updateTasks = new MutableLiveData<>();
 
     private MediatorLiveData<List<Task>> mListMediatorLiveData = new MediatorLiveData<>();
@@ -27,6 +30,7 @@ public class TaskViewModel extends AndroidViewModel {
         super(application);
         mRepository = new TaskRepository(application);
         // mAllTasks = mRepository.getAllTasks();
+        mAllProjects = mRepository.getAllProjects();
         mRepository.getAllTasks().observeForever(new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
@@ -39,6 +43,10 @@ public class TaskViewModel extends AndroidViewModel {
 
     public void getTasks(){
         mRepository.getTasks();
+    }
+
+    public LiveData<List<Project>> getAllProjects(){
+        return mAllProjects;
     }
 
     public LiveData<List<Task>> getUpdateTasks() {
