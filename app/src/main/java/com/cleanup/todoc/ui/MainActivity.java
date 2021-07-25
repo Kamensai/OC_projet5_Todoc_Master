@@ -1,6 +1,7 @@
 package com.cleanup.todoc.ui;
 
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     // Suppress warning is safe because variable is initialized in onCreate
     @SuppressWarnings("NullableProblems")
     @NonNull
-    private RecyclerView listTasks;
+    private RecyclerView recyclerViewListTasks;
 
     /**
      * The TextView displaying the empty state
@@ -101,25 +102,26 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         setContentView(R.layout.activity_main);
 
-        listTasks = findViewById(R.id.list_tasks);
+        recyclerViewListTasks = findViewById(R.id.list_tasks);
         lblNoTasks = findViewById(R.id.lbl_no_task);
 
-        listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        listTasks.setAdapter(adapter);
+        recyclerViewListTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerViewListTasks.setAdapter(adapter);
 
         mTaskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
         // Update the cached copy of the words in the adapter.
         // mTaskViewModel.getAllTasks().observe(this, adapter::updateTasks);
 
-        mTaskViewModel.getAllProjects().observe(this, this::populateDialogSpinner);
-
         mTaskViewModel.getTasks();
         mTaskViewModel.getUpdateTasks().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
+                //initList(tasks);
                 updateTasks(tasks);
             }
         });
+
+        mTaskViewModel.getAllProjects().observe(this, this::populateDialogSpinner);
 
         findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,8 +149,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             sortMethod = "OLD_FIRST";
         } else if (id == R.id.filter_recent_first) {
             sortMethod = "RECENT_FIRST";
+        } else if (id == R.id.filter_project_name) {
+            sortMethod = "PROJECT_NAME";
         }
-
         adapter.sortTasks(sortMethod);
 
         return super.onOptionsItemSelected(item);
@@ -186,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
                 Task task = new Task(
                         taskProject.getId(),
+                        taskProject.getName(),
                         taskName,
                         new Date().getTime()
                 );
@@ -237,10 +241,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private void updateTasks(List<Task> tasks) {
         if (tasks.size() == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
-            listTasks.setVisibility(View.GONE);
+            recyclerViewListTasks.setVisibility(View.GONE);
         } else {
             lblNoTasks.setVisibility(View.GONE);
-            listTasks.setVisibility(View.VISIBLE);
+            recyclerViewListTasks.setVisibility(View.VISIBLE);
             adapter.updateAndSortTasks(tasks, sortMethod);
         }
     }
@@ -296,17 +300,28 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         mProjectsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, projects);
         mProjectsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
+/*
+    private void initList(List<Task> tasks) {
+        if (adapter != null && !sortMethod.equals("NONE")) {
+            adapter.updateAndSortTasks(tasks, sortMethod);
+        }
+        else {
+            recyclerViewListTasks.setAdapter(new TasksAdapter(tasks, this));
+        }
+    }
+
+ */
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle out) {
         super.onSaveInstanceState(out);
             out.putString(SORT_METHOD, sortMethod);
     }
-
+/*
     /**
      * List of all possible sort methods for task
-     */
-    /* private enum SortMethod {
+
+     private enum SortMethod {
         /**
          * Sort alphabetical by name
          */

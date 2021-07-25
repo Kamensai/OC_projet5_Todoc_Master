@@ -52,7 +52,7 @@ public abstract class RoomDatabase extends androidx.room.RoomDatabase {
                 // If you want to start with more tasks, just add them.
                 TaskDao dao = INSTANCE.taskDao();
 
-                Task tasko = new Task( 2L, App.getRes().getString(R.string.task_trash), new Date().getTime());
+                Task tasko = new Task( 2L, App.getRes().getString(R.string.project_name_Lucidia), App.getRes().getString(R.string.task_trash), new Date().getTime());
                 dao.insert(tasko);
 
                 Project project = new Project( App.getRes().getString(R.string.project_name_Tartampion), 0xFFEADAD1);

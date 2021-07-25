@@ -1,9 +1,11 @@
 package com.cleanup.todoc.model;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -32,6 +34,10 @@ public class Task {
     @ColumnInfo(name = "projectId")
     private long projectId;
 
+    @NonNull
+    @ColumnInfo(name = "projectName")
+    private String projectName;
+
     /**
      * The name of the task
      */
@@ -55,8 +61,9 @@ public class Task {
      * @param name              the name of the task to set
      * @param creationTimestamp the timestamp when the task has been created to set
      */
-    public Task(long projectId, @NonNull String name, long creationTimestamp) {
+    public Task(long projectId, @NotNull String projectName, @NonNull String name, long creationTimestamp) {
         this.projectId = projectId;
+        this.projectName = projectName;
         this.name = name;
         this.creationTimestamp = creationTimestamp;
     }
@@ -100,6 +107,15 @@ public class Task {
         return Project.getProjectById(projectId, projects);
     }
 
+    @NotNull
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(List<Project> projects) {
+        this.projectName =  Objects.requireNonNull(Project.getProjectById(projectId, projects)).getName();
+    }
+
     /**
      * Returns the name of the task.
      *
@@ -131,6 +147,10 @@ public class Task {
     public long getCreationTimestamp() {
         return creationTimestamp;
     }
+
+
+    public final static Comparator<Task> taskProjectNameComparator = (r1, r2) -> Objects.requireNonNull(r1.getProjectName()).compareTo(Objects.requireNonNull(r2.getProjectName()));
+
 
     /**
      * Comparator to sort task from A to Z

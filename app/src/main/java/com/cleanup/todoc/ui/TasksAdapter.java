@@ -1,6 +1,7 @@
 package com.cleanup.todoc.ui;
 
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,16 @@ import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +36,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      * The list of tasks the adapter deals with
      */
     @NonNull
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> mTasks = new ArrayList<>();
 
     @NonNull
     private List<Project> projects = new ArrayList<>();
@@ -49,6 +55,11 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         this.deleteTaskListener = deleteTaskListener;
     }
 
+    TasksAdapter(@NotNull List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
+        mTasks = tasks;
+        this.deleteTaskListener = deleteTaskListener;
+    }
+
     void updateProjects(@NonNull final List<Project> projects) {
         this.projects = projects;
         notifyDataSetChanged();
@@ -60,31 +71,63 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      * @param tasks the list of tasks the adapter deals with to set
      */
     void updateAndSortTasks(@NonNull final List<Task> tasks, String sortMethod) {
-        this.tasks = tasks;
+        this.mTasks = tasks;
         sortTasks(sortMethod);
         notifyDataSetChanged();
     }
 
     void sortTasks(String sortMethod){
-        if(!tasks.isEmpty()) {
+        if(!mTasks.isEmpty()) {
             switch (sortMethod) {
                 case "ALPHABETICAL":
-                    Collections.sort(tasks, new Task.TaskAZComparator());
+                    Collections.sort(mTasks, new Task.TaskAZComparator());
                     break;
                 case "ALPHABETICAL_INVERTED":
-                    Collections.sort(tasks, new Task.TaskZAComparator());
+                    Collections.sort(mTasks, new Task.TaskZAComparator());
                     break;
                 case "RECENT_FIRST":
-                    Collections.sort(tasks, new Task.TaskRecentComparator());
+                    Collections.sort(mTasks, new Task.TaskRecentComparator());
                     break;
                 case "OLD_FIRST":
-                    Collections.sort(tasks, new Task.TaskOldComparator());
+                    Collections.sort(mTasks, new Task.TaskOldComparator());
                     break;
+                case "PROJECT_NAME":
+                    Collections.sort(mTasks, Task.taskProjectNameComparator);
+                    break;
+                    //mTasks = getTasksByProject(mSortMethod);
+                    //mTasks.stream().filter(task -> Objects.requireNonNull(task.getProject(projects)).getName().equals(mSortMethod)).forEach((task -> mTasks.add(task)));
+                                //removeIf(task -> !Objects.requireNonNull(task.getProject(projects)).getName().equals(mSortMethod));
+                //case "LUCIDIA":
+                    //Collections.sort(mTasks, Task.taskProjectNameComparator);
+
+                    //mSortMethod = LUCIDIA;
+                    //mTasks = getTasksByProject(mSortMethod);
+                       // mTasks.stream().filter(task -> Objects.requireNonNull(task.getProject(projects)).getName().equals(mSortMethod)).forEach((task -> mTasks.add(task)));
+                //case "TARTAMPION":
+                    //Collections.sort(mTasks, Task.taskProjectNameComparator);
+
+                    //mSortMethod = TARTAMPION;
+                    //mTasks = getTasksByProject(mSortMethod);
+                    // mTasks.stream().filter(task -> Objects.requireNonNull(task.getProject(projects)).getName().equals(mSortMethod)).forEach((task -> mTasks.add(task)));
+
                 default:break;
             }
             notifyDataSetChanged();
         }
     }
+/*
+    public List<Task> getTasksByProject(String projectChosen) {
+        List<Task> mListByProject = new ArrayList<>();
+        for (int i = 0; i < mTasks.size(); i++) {
+            Task task = mTasks.get(i);
+            if (projectChosen.equalsIgnoreCase(Objects.requireNonNull(task.getProject(projects)).getName())) {
+                mListByProject.add(task);
+            }
+        }
+        return mListByProject;
+    }
+
+ */
 
     @NonNull
     @Override
@@ -95,12 +138,12 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder taskViewHolder, int position) {
-        taskViewHolder.bind(tasks.get(position));
+        taskViewHolder.bind(mTasks.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return tasks.size();
+        return mTasks.size();
     }
 
     /**
@@ -185,7 +228,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
             final Project taskProject = task.getProject(projects);
             if (taskProject != null) {
                 imgProject.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
-                lblProjectName.setText(taskProject.getName());
+                lblProjectName.setText(task.getProjectName());
             } else {
                 imgProject.setVisibility(View.INVISIBLE);
                 lblProjectName.setText("");
