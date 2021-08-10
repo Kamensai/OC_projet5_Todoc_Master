@@ -1,7 +1,6 @@
 package com.cleanup.todoc.ui;
 
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
-import com.cleanup.todoc.model.TaskViewModel;
+import com.cleanup.todoc.model.MainActivityViewModel;
 
 import java.util.Date;
 import java.util.List;
@@ -33,12 +32,11 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * <p>Home activity of the application which is displayed when the user opens the app.</p>
  * <p>Displays the list of tasks.</p>
- *
  * @author Gaëtan HERFRAY
  */
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
-    private TaskViewModel mTaskViewModel;
+    private MainActivityViewModel mMainActivityViewModel;
     /**
      * List of all projects available in the application
      */
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * The sort method to be used to display tasks
      */
     @NonNull
-    private String sortMethod = "NONE";
+    private String sortMethod = "OLD_FIRST";
 
     /**
      * Dialog to create a new task
@@ -92,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     private final static String SORT_METHOD = "SORT_METHOD";
 
+    private boolean showPopUp = false;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,27 +108,41 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         recyclerViewListTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerViewListTasks.setAdapter(adapter);
 
-        mTaskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
-        // Update the cached copy of the words in the adapter.
+        mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        // Update the cached copy of the tasks in the adapter.
         // mTaskViewModel.getAllTasks().observe(this, adapter::updateTasks);
 
-        mTaskViewModel.getTasks();
-        mTaskViewModel.getUpdateTasks().observe(this, new Observer<List<Task>>() {
+        mMainActivityViewModel.getAllTasksLiveData().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 //initList(tasks);
                 updateTasks(tasks);
             }
         });
+        mMainActivityViewModel.getTasks();
 
-        mTaskViewModel.getAllProjects().observe(this, this::populateDialogSpinner);
+        mMainActivityViewModel.getAllProjectsLiveData().observe(this, new Observer<List<Project>>() {
+            @Override
+            public void onChanged(List<Project> projects) {
+                adapter.updateProjects(projects);
+                if (showPopUp) {
+                    showPopUp = false;
+                    populateDialogSpinner(projects);
+                    showAddTaskDialog();
+                }
+            }
+        });
+
+        mMainActivityViewModel.getProjects();
 
         findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAddTaskDialog();
+                showPopUp = true;
+                mMainActivityViewModel.getProjects();
             }
         });
+
     }
 
     @Override
@@ -159,13 +173,12 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public void onDeleteTask(Task task) {
-        mTaskViewModel.delete(task);
+        mMainActivityViewModel.delete(task);
         // updateTasks();
     }
 
     /**
      * Called when the user clicks on the positive button of the Create Task Dialog.
-     *
      * @param dialogInterface the current displayed dialog
      */
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
@@ -199,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 dialogInterface.dismiss();
             }
             // If name has been set, but project has not been set (this should never occur)
-            else{
+            else {
                 dialogInterface.dismiss();
             }
         }
@@ -227,11 +240,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     /**
      * Adds the given task to the list of created tasks.
-     *
      * @param task the task to be added to the list
      */
     private void addTask(@NonNull Task task) {
-        mTaskViewModel.insert(task);
+        mMainActivityViewModel.insert(task);
         // updateTasks();
     }
 
@@ -251,7 +263,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     /**
      * Returns the dialog allowing the user to create a new task.
-     *
      * @return the dialog allowing the user to create a new task
      */
     @NonNull
@@ -296,26 +307,14 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * Sets the data of the Spinner with projects to associate to a new task
      */
     private void populateDialogSpinner(List<Project> projects) {
-        adapter.updateProjects(projects);
         mProjectsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, projects);
         mProjectsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
-/*
-    private void initList(List<Task> tasks) {
-        if (adapter != null && !sortMethod.equals("NONE")) {
-            adapter.updateAndSortTasks(tasks, sortMethod);
-        }
-        else {
-            recyclerViewListTasks.setAdapter(new TasksAdapter(tasks, this));
-        }
-    }
-
- */
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle out) {
         super.onSaveInstanceState(out);
-            out.putString(SORT_METHOD, sortMethod);
+        out.putString(SORT_METHOD, sortMethod);
     }
 /*
     /**

@@ -7,6 +7,7 @@ import com.cleanup.todoc.App;
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.service.ProjectDao;
 import com.cleanup.todoc.service.TaskDao;
 
 import java.util.Date;
@@ -21,6 +22,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 @Database(entities = {Task.class, Project.class}, version = 1, exportSchema = false)
 public abstract class RoomDatabase extends androidx.room.RoomDatabase {
     public abstract TaskDao taskDao();
+    public abstract ProjectDao projectDao();
 
     private static volatile RoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
@@ -50,19 +52,20 @@ public abstract class RoomDatabase extends androidx.room.RoomDatabase {
             databaseWriteExecutor.execute(() -> {
                 // Populate the database in the background.
                 // If you want to start with more tasks, just add them.
-                TaskDao dao = INSTANCE.taskDao();
+                TaskDao taskDao = INSTANCE.taskDao();
+                ProjectDao projectDao = INSTANCE.projectDao();
 
                 Task tasko = new Task( 2L, App.getRes().getString(R.string.project_name_Lucidia), App.getRes().getString(R.string.task_trash), new Date().getTime());
-                dao.insert(tasko);
+                taskDao.insert(tasko);
 
                 Project project = new Project( App.getRes().getString(R.string.project_name_Tartampion), 0xFFEADAD1);
-                dao.insert(project);
+                projectDao.insert(project);
 
                 Project project1 = new Project( App.getRes().getString(R.string.project_name_Lucidia), 0xFFB4CDBA);
-                dao.insert(project1);
+                projectDao.insert(project1);
 
                 Project project2 = new Project( App.getRes().getString(R.string.project_name_Circus), 0xFFA3CED2);
-                dao.insert(project2);
+                projectDao.insert(project2);
 
             });
         }

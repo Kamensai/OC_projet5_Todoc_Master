@@ -14,13 +14,10 @@ import androidx.room.Query;
 
 @Dao
 public interface TaskDao {
-    // allowing the insert of the same word multiple times by passing a
+    // allowing the insert of the same task multiple times by passing a
     // conflict resolution strategy
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Task task);
-
-    @Query("DELETE FROM task_table")
-    void deleteAll();
 
     @Delete
     void delete(Task task);
@@ -28,11 +25,10 @@ public interface TaskDao {
     @Query("SELECT * FROM task_table ORDER BY name ASC")
     LiveData<List<Task>> getAlphabetizedTasks();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Project project);
-
-    @Query("SELECT * FROM project_table ORDER BY name ASC")
-    LiveData<List<Project>> getAlphabetizedProjects();
-
-
+    /**
+     * For test
+     * @return Tasks
+     */
+    @Query("SELECT * FROM task_table")
+    List<Task> getAllTasks();
 }

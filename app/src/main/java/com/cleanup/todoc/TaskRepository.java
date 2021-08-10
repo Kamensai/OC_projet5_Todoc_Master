@@ -15,27 +15,21 @@ import androidx.lifecycle.Observer;
 
 public class TaskRepository {
     private TaskDao mTaskDao;
-    private LiveData<List<Project>> mAllProjects;
-    private MutableLiveData<List<Task>> mAllTasks = new MutableLiveData<>();
 
+    private MutableLiveData<List<Task>> mAllTasks = new MutableLiveData<>();
 
     public TaskRepository(Application application) {
         RoomDatabase db = RoomDatabase.getDatabase(application);
         mTaskDao = db.taskDao();
         // mAllTasks = mTaskDao.getAlphabetizedWords();
-        mAllProjects = mTaskDao.getAlphabetizedProjects();
+        // mAllProjects = mTaskDao.getAlphabetizedProjects();
     }
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    public LiveData<List<Task>> getAllTasks() {
+    public LiveData<List<Task>> getAllTasksLiveData() {
         return mAllTasks;
     }
-
-    public LiveData<List<Project>> getAllProjects() {
-        return mAllProjects;
-    }
-
 
     public void getTasks(){
         mTaskDao.getAlphabetizedTasks().observeForever(new Observer<List<Task>>() {

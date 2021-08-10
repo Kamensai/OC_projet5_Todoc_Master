@@ -3,6 +3,7 @@ package com.cleanup.todoc.model;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -121,5 +122,26 @@ public class Project {
     @NonNull
     public String toString() {
         return getName();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Project)) {
+            return false;
+        }
+
+        Project that = (Project) other;
+
+        // Custom equality check here.
+        return  this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 1;
+
+        hashCode = hashCode * 37 + this.name.hashCode();
+
+        return hashCode;
     }
 }

@@ -55,10 +55,6 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         this.deleteTaskListener = deleteTaskListener;
     }
 
-    TasksAdapter(@NotNull List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
-        mTasks = tasks;
-        this.deleteTaskListener = deleteTaskListener;
-    }
 
     void updateProjects(@NonNull final List<Project> projects) {
         this.projects = projects;
@@ -233,7 +229,6 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
                 imgProject.setVisibility(View.INVISIBLE);
                 lblProjectName.setText("");
             }
-
         }
     }
 }

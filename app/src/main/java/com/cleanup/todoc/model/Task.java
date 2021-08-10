@@ -191,4 +191,27 @@ public class Task {
             return (int) (left.creationTimestamp - right.creationTimestamp);
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Task)) {
+            return false;
+        }
+
+        Task that = (Task) other;
+
+        // Custom equality check here.
+        return  this.projectName.equals(that.projectName)
+                && this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 1;
+
+        hashCode = hashCode * 37 + this.projectName.hashCode();
+        hashCode = hashCode * 37 + this.name.hashCode();
+
+        return hashCode;
+    }
 }
