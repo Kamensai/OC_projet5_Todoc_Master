@@ -1,7 +1,6 @@
 package com.cleanup.todoc.room;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 import com.cleanup.todoc.App;
 import com.cleanup.todoc.R;

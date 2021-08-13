@@ -2,7 +2,6 @@ package com.cleanup.todoc;
 
 import android.app.Application;
 
-import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.room.RoomDatabase;
 import com.cleanup.todoc.service.TaskDao;

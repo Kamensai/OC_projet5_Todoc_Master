@@ -129,7 +129,6 @@ public class MainActivityInstrumentedTest {
                 .check(matches(withText("aaa Tâche example")));
 
 
-        // TODO : Faire le tri par nom de projet. Créer deux tâches avec des noms de projet différent. Cliquer sur le tri et Vérifier l'ordre. (Citrus, Lucidia, Tartampion)
         // Sort by ProjectName
 
         // On choisit le projet "Lucidia" dans le Spinner

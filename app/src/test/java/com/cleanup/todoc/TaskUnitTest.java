@@ -171,7 +171,6 @@ public class TaskUnitTest {
         assertSame(tasks.get(2), task3);
     }
 
-    // TODO : Ce test ne supprime pas l'objet Task. A refaire.
     @Test
     public void addTaskAndDeleteWithSuccess() {
         Task taskToAdd = TestUtil.getTasks().get(0);
