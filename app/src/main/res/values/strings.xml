@@ -7,6 +7,7 @@
     <string name="sort_alphabetical_invert">Z -&gt; A</string>
     <string name="sort_oldest_first">Les plus anciens d’abord</string>
     <string name="sort_recent_first">Les plus récents d’abord</string>
+    <string name="sort_project_name">Nom de projet</string>
 
     <string name="add_task">Ajouter une tâche</string>
     <string name="add">Ajouter</string>
@@ -16,4 +17,10 @@
     <string name="task_name_hint">Nom de la tâche</string>
 
     <string name="empty_task_name">Le nom de la tâche doit être renseigné</string>
+
+    <string name="project_name_Tartampion">Projet Tartampion</string>
+    <string name="project_name_Lucidia">Projet Lucidia</string>
+    <string name="project_name_Circus">Projet Circus</string>
+
+    <string name="task_trash">Jeter les poubelles</string>
 </resources>
