@@ -13,9 +13,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 public class TaskRepository {
-    private TaskDao mTaskDao;
+    private final TaskDao mTaskDao;
 
-    private MutableLiveData<List<Task>> mAllTasks = new MutableLiveData<>();
+    private final MutableLiveData<List<Task>> mAllTasks = new MutableLiveData<>();
 
     public TaskRepository(Application application) {
         RoomDatabase db = RoomDatabase.getDatabase(application);

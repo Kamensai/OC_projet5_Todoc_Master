@@ -18,16 +18,16 @@ import androidx.lifecycle.Observer;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
-    private TaskRepository mTaskRepository;
+    private final TaskRepository mTaskRepository;
 
-    private ProjectRepository mProjectRepository;
+    private final ProjectRepository mProjectRepository;
 
 
-    private MutableLiveData<List<Task>> updateTasks = new MutableLiveData<>();
+    private final MutableLiveData<List<Task>> updateTasks = new MutableLiveData<>();
 
-    private MutableLiveData<List<Project>> updateProjects = new MutableLiveData<>();
+    private final MutableLiveData<List<Project>> updateProjects = new MutableLiveData<>();
 
-    private MediatorLiveData<List<Task>> mListMediatorLiveData = new MediatorLiveData<>();
+    private final MediatorLiveData<List<Task>> mListMediatorLiveData = new MediatorLiveData<>();
 
     //private final LiveData<List<Task>> mAllTasks;
 

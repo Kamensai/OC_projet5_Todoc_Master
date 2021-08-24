@@ -12,17 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Created by dannyroa on 5/10/15.
  *
- * @see https://github.com/dannyroa/espresso-samples/blob/master/RecyclerView/app/src/androidTest/java/com/dannyroa/espresso_samples/recyclerview/RecyclerViewMatcher.java
+ * @see <a href="https://github.com/dannyroa/espresso-samples/blob/master/RecyclerView/app/src/androidTest/java/com/dannyroa/espresso_samples/recyclerview/RecyclerViewMatcher.java"></a>
  */
 public class RecyclerViewMatcher {
     private final int recyclerViewId;
 
     public RecyclerViewMatcher(int recyclerViewId) {
         this.recyclerViewId = recyclerViewId;
-    }
-
-    public Matcher<View> atPosition(final int position) {
-        return atPositionOnView(position, -1);
     }
 
     public Matcher<View> atPositionOnView(final int position, final int targetViewId) {
@@ -38,8 +34,7 @@ public class RecyclerViewMatcher {
                         idDescription = this.resources.getResourceName(recyclerViewId);
                     } catch (Resources.NotFoundException var4) {
                         idDescription = String.format("%s (resource name not found)",
-                                Integer.valueOf
-                                        (recyclerViewId));
+                                Integer.valueOf(recyclerViewId));
                     }
                 }
 

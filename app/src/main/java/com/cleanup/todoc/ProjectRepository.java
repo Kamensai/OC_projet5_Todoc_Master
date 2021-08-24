@@ -13,9 +13,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 public class ProjectRepository {
-    private ProjectDao mProjectDao;
+    private final ProjectDao mProjectDao;
 
-    private MutableLiveData<List<Project>> mAllProjects = new MutableLiveData<>();
+    private final MutableLiveData<List<Project>> mAllProjects = new MutableLiveData<>();
 
 
     public ProjectRepository(Application application) {

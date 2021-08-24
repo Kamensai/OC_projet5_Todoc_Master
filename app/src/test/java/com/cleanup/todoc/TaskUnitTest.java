@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -50,12 +49,12 @@ public class TaskUnitTest {
     }
 
     @After
-    public void closeDb() throws IOException {
+    public void closeDb() {
         db.close();
     }
 
     @Test
-    public void getProjectsWithSuccess() throws Exception {
+    public void getProjectsWithSuccess() {
         Project project = new Project( App.getRes().getString(R.string.project_name_Tartampion), 0xFFEADAD1);
         mProjectsDao.insert(project);
         Project project1 = new Project( App.getRes().getString(R.string.project_name_Lucidia), 0xFFB4CDBA);

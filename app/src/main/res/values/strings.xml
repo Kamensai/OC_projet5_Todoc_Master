@@ -23,4 +23,6 @@
     <string name="project_name_Circus">Projet Circus</string>
 
     <string name="task_trash">Jeter les poubelles</string>
+    <string name="color_of_the_project">color of the project</string>
+    <string name="delete_icon">delete icon</string>
 </resources>
