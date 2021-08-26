@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.SortMethodDef;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,28 +61,28 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      *
      * @param tasks the list of tasks the adapter deals with to set
      */
-    void updateAndSortTasks(@NonNull final List<Task> tasks, String sortMethod) {
+    void updateAndSortTasks(@NonNull final List<Task> tasks, @SortMethodDef.SortMethodStringDef String sortMethod) {
         this.mTasks = tasks;
         sortTasks(sortMethod);
         notifyDataSetChanged();
     }
 
-    void sortTasks(String sortMethod){
+    void sortTasks(@SortMethodDef.SortMethodStringDef String sortMethod){
         if(!mTasks.isEmpty()) {
             switch (sortMethod) {
-                case "ALPHABETICAL":
+                case SortMethodDef.ALPHABETICAL:
                     Collections.sort(mTasks, new Task.TaskAZComparator());
                     break;
-                case "ALPHABETICAL_INVERTED":
+                case SortMethodDef.ALPHABETICAL_INVERTED:
                     Collections.sort(mTasks, new Task.TaskZAComparator());
                     break;
-                case "RECENT_FIRST":
+                case SortMethodDef.RECENT_FIRST:
                     Collections.sort(mTasks, new Task.TaskRecentComparator());
                     break;
-                case "OLD_FIRST":
+                case SortMethodDef.OLD_FIRST:
                     Collections.sort(mTasks, new Task.TaskOldComparator());
                     break;
-                case "PROJECT_NAME":
+                case SortMethodDef.PROJECT_NAME:
                     Collections.sort(mTasks, Task.taskProjectNameComparator);
                     break;
                     //mTasks = getTasksByProject(mSortMethod);
@@ -126,7 +129,18 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder taskViewHolder, int position) {
-        taskViewHolder.bind(mTasks.get(position));
+        final Task task = mTasks.get(position);
+        final Project project = getProjectById(task.getProjectId());
+        taskViewHolder.bind(task,project);
+    }
+
+    @Nullable
+    private Project getProjectById(long id) {
+        for (Project project : projects) {
+            if (project.getId() == id)
+                return project;
+        }
+        return null;
     }
 
     @Override
@@ -208,14 +222,14 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
          * Binds a task to the item view.
          *
          * @param task the task to bind in the item view
+         * @param project
          */
-        void bind(Task task) {
+        void bind(Task task, Project project) {
             lblTaskName.setText(task.getName());
             imgDelete.setTag(task);
 
-            final Project taskProject = task.getProject(projects);
-            if (taskProject != null) {
-                imgProject.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
+            if (project != null) {
+                imgProject.setSupportImageTintList(ColorStateList.valueOf(project.getColor()));
                 lblProjectName.setText(task.getProjectName());
             } else {
                 imgProject.setVisibility(View.INVISIBLE);

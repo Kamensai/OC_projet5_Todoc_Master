@@ -65,23 +65,6 @@ public class Project {
     }
 
      */
-
-    /**
-     * Returns the project with the given unique identifier, or null if no project with that
-     * identifier can be found.
-     *
-     * @param id the unique identifier of the project to return
-     * @return the project with the given unique identifier, or null if it has not been found
-     */
-    @Nullable
-    public static Project getProjectById(long id, List<Project> allProjects) {
-        for (Project project : allProjects) {
-            if (project.id == id)
-                return project;
-        }
-        return null;
-    }
-
     /**
      * Returns the unique identifier of the project.
      *
