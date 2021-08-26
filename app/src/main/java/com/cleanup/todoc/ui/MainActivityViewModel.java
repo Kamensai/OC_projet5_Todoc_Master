@@ -3,8 +3,8 @@ package com.cleanup.todoc.ui;
 
 import android.app.Application;
 
-import com.cleanup.todoc.ProjectRepository;
-import com.cleanup.todoc.TaskRepository;
+import com.cleanup.todoc.repositories.ProjectRepository;
+import com.cleanup.todoc.repositories.TaskRepository;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 

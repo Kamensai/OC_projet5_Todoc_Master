@@ -1,4 +1,4 @@
-package com.cleanup.todoc.room;
+package com.cleanup.todoc.database;
 
 import android.content.Context;
 
@@ -6,8 +6,8 @@ import com.cleanup.todoc.App;
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
-import com.cleanup.todoc.service.ProjectDao;
-import com.cleanup.todoc.service.TaskDao;
+import com.cleanup.todoc.database.dao.ProjectDao;
+import com.cleanup.todoc.database.dao.TaskDao;
 
 import java.util.Date;
 import java.util.concurrent.ExecutorService;

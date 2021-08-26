@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
-import com.cleanup.todoc.room.RoomDatabase;
-import com.cleanup.todoc.service.ProjectDao;
-import com.cleanup.todoc.service.TaskDao;
+import com.cleanup.todoc.database.RoomDatabase;
+import com.cleanup.todoc.database.dao.ProjectDao;
+import com.cleanup.todoc.database.dao.TaskDao;
 
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.After;

@@ -1,10 +1,10 @@
-package com.cleanup.todoc;
+package com.cleanup.todoc.repositories;
 
 import android.app.Application;
 
 import com.cleanup.todoc.model.Task;
-import com.cleanup.todoc.room.RoomDatabase;
-import com.cleanup.todoc.service.TaskDao;
+import com.cleanup.todoc.database.RoomDatabase;
+import com.cleanup.todoc.database.dao.TaskDao;
 
 import java.util.List;
 

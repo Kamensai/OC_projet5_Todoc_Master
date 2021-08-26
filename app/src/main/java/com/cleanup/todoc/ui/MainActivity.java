@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.SortMethodDef;
 
 import java.util.Date;
 import java.util.List;
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * The sort method to be used to display tasks
      */
     @NonNull
-    private String sortMethod = "OLD_FIRST";
+    @SortMethodDef.SortMethodStringDef
+    private String sortMethod = SortMethodDef.OLD_FIRST;
 
     /**
      * Dialog to create a new task
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @NonNull
     private TextView lblNoTasks;
 
-    private final static String SORT_METHOD = "SORT_METHOD";
+    private final static String SORT_METHOD = SortMethodDef.SORT_METHOD;
 
     private boolean showPopUp = false;
 
@@ -153,15 +155,15 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         int id = item.getItemId();
 
         if (id == R.id.filter_alphabetical) {
-            sortMethod = "ALPHABETICAL";
+            sortMethod = SortMethodDef.ALPHABETICAL;
         } else if (id == R.id.filter_alphabetical_inverted) {
-            sortMethod = "ALPHABETICAL_INVERTED";
+            sortMethod = SortMethodDef.ALPHABETICAL_INVERTED;
         } else if (id == R.id.filter_oldest_first) {
-            sortMethod = "OLD_FIRST";
+            sortMethod = SortMethodDef.OLD_FIRST;
         } else if (id == R.id.filter_recent_first) {
-            sortMethod = "RECENT_FIRST";
+            sortMethod = SortMethodDef.RECENT_FIRST;
         } else if (id == R.id.filter_project_name) {
-            sortMethod = "PROJECT_NAME";
+            sortMethod = SortMethodDef.PROJECT_NAME;
         }
         adapter.sortTasks(sortMethod);
 
