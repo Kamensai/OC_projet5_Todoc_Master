@@ -2,11 +2,11 @@ package com.cleanup.todoc;
 
 import android.content.Context;
 
-import com.cleanup.todoc.model.Project;
-import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.database.RoomDatabase;
 import com.cleanup.todoc.database.dao.ProjectDao;
 import com.cleanup.todoc.database.dao.TaskDao;
+import com.cleanup.todoc.model.Project;
+import com.cleanup.todoc.model.Task;
 
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.After;
@@ -30,7 +30,6 @@ import static org.junit.Assert.assertSame;
 
 /**
  * Unit tests for tasks
- *
  * @author Gaëtan HERFRAY
  */
 
@@ -41,7 +40,7 @@ public class TaskUnitTest {
     private RoomDatabase db;
 
     @Before
-    public void createDb(){
+    public void createDb() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         db = Room.inMemoryDatabaseBuilder(context, RoomDatabase.class).allowMainThreadQueries().build();
         mTaskDao = db.taskDao();
@@ -55,20 +54,16 @@ public class TaskUnitTest {
 
     @Test
     public void getProjectsWithSuccess() {
-        Project project = new Project( App.getRes().getString(R.string.project_name_Tartampion), 0xFFEADAD1);
+        Project project = new Project(App.getRes().getString(R.string.project_name_Tartampion), 0xFFEADAD1);
         mProjectsDao.insert(project);
-        Project project1 = new Project( App.getRes().getString(R.string.project_name_Lucidia), 0xFFB4CDBA);
+        Project project1 = new Project(App.getRes().getString(R.string.project_name_Lucidia), 0xFFB4CDBA);
         mProjectsDao.insert(project1);
-        Project project2 = new Project( App.getRes().getString(R.string.project_name_Circus), 0xFFA3CED2);
+        Project project2 = new Project(App.getRes().getString(R.string.project_name_Circus), 0xFFA3CED2);
         mProjectsDao.insert(project2);
         List<Project> mListProjectsFromTest = TestUtil.getListProjects();
         List<Project> mListProjectsFromDb = mProjectsDao.getAllProjects();
 
         org.hamcrest.MatcherAssert.assertThat(mListProjectsFromDb, IsIterableContainingInAnyOrder.containsInAnyOrder(Objects.requireNonNull(mListProjectsFromTest.toArray())));
-
-        //Assert.assertEquals(mListProjectsFromTest.get(0).getName(),mListProjectsFromDb.get(0).getName());
-        //Assert.assertEquals(mListProjectsFromTest.get(1).getName(),mListProjectsFromDb.get(1).getName());
-        //Assert.assertEquals(mListProjectsFromTest.get(2).getName(),mListProjectsFromDb.get(2).getName());
     }
 
     @Test
@@ -82,7 +77,7 @@ public class TaskUnitTest {
         assertEquals("Projet Tartampion", task1.getProjectName());
         assertEquals("Projet Lucidia", task2.getProjectName());
         assertEquals("Projet Circus", task3.getProjectName());
-        assertEquals( "", task4.getProjectName());
+        assertEquals("", task4.getProjectName());
     }
 
     @Test
@@ -156,17 +151,13 @@ public class TaskUnitTest {
     @Test
     public void addTaskAndDeleteWithSuccess() {
         Task taskToAdd = TestUtil.getTasks().get(0);
-            mTaskDao.insert(taskToAdd);
+        mTaskDao.insert(taskToAdd);
 
         Task taskAdded = mTaskDao.getAllTasks().get(0);
-
-        //Assert.assertThat(mListTasksFromDb.get(0), equalTo(taskToAdd));
         Assert.assertTrue(mTaskDao.getAllTasks().contains(taskAdded));
 
-        //Assert.assertEquals(mTaskDao.getAllTasks().get(0).getName(), taskToAdd.getName());
-
         Task taskToDelete = mTaskDao.getAllTasks().get(0);
-            mTaskDao.delete(taskToDelete);
+        mTaskDao.delete(taskToDelete);
 
         Assert.assertFalse(mTaskDao.getAllTasks().contains(taskToDelete));
     }

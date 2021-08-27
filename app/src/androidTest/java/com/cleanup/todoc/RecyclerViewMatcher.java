@@ -7,11 +7,12 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
+import java.util.Objects;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by dannyroa on 5/10/15.
- *
  * @see <a href="https://github.com/dannyroa/espresso-samples/blob/master/RecyclerView/app/src/androidTest/java/com/dannyroa/espresso_samples/recyclerview/RecyclerViewMatcher.java"></a>
  */
 public class RecyclerViewMatcher {
@@ -49,7 +50,7 @@ public class RecyclerViewMatcher {
                     RecyclerView recyclerView =
                             view.getRootView().findViewById(recyclerViewId);
                     if (recyclerView != null && recyclerView.getId() == recyclerViewId) {
-                        childView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+                        childView = Objects.requireNonNull(recyclerView.findViewHolderForAdapterPosition(position)).itemView;
                     } else {
                         return false;
                     }

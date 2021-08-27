@@ -1,9 +1,5 @@
 package com.cleanup.todoc.model;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -12,7 +8,6 @@ import androidx.room.PrimaryKey;
 
 /**
  * <p>Models for project in which tasks are included.</p>
- *
  * @author Gaëtan HERFRAY
  */
 @Entity(tableName = "project_table")
@@ -40,7 +35,6 @@ public class Project {
 
     /**
      * Instantiates a new Project.
-     *
      * @param name  the name of the project to set
      * @param color the hex (ARGB) code of the color associated to the project to set
      */
@@ -50,24 +44,7 @@ public class Project {
     }
 
     /**
-     * Returns all the projects of the application.
-     *
-     * @return all the projects of the application
-     */
-    /*
-    @NonNull
-    public static Project[] getAllProjects() {
-        return new Project[]{
-                new Project( "Projet Tartampion", 0xFFEADAD1),
-                new Project( "Projet Lucidia", 0xFFB4CDBA),
-                new Project( "Projet Circus", 0xFFA3CED2),
-        };
-    }
-
-     */
-    /**
      * Returns the unique identifier of the project.
-     *
      * @return the unique identifier of the project
      */
     public long getId() {
@@ -80,7 +57,6 @@ public class Project {
 
     /**
      * Returns the name of the project.
-     *
      * @return the name of the project
      */
     @NonNull
@@ -90,7 +66,6 @@ public class Project {
 
     /**
      * Returns the hex (ARGB) code of the color associated to the project.
-     *
      * @return the hex (ARGB) code of the color associated to the project
      */
     @ColorInt
@@ -113,7 +88,7 @@ public class Project {
         Project that = (Project) other;
 
         // Custom equality check here.
-        return  this.name.equals(that.name);
+        return this.name.equals(that.name);
     }
 
     @Override

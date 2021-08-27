@@ -2,9 +2,9 @@ package com.cleanup.todoc.repositories;
 
 import android.app.Application;
 
-import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.database.RoomDatabase;
 import com.cleanup.todoc.database.dao.ProjectDao;
+import com.cleanup.todoc.model.Project;
 
 import java.util.List;
 
@@ -21,18 +21,15 @@ public class ProjectRepository {
     public ProjectRepository(Application application) {
         RoomDatabase db = RoomDatabase.getDatabase(application);
         mProjectDao = db.projectDao();
-        // mAllTasks = mTaskDao.getAlphabetizedWords();
-        // mAllProjects = mTaskDao.getAlphabetizedProjects();
     }
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-
     public LiveData<List<Project>> getAllProjectsLiveData() {
         return mAllProjects;
     }
 
-    public void getProjects(){
+    public void getProjects() {
         mProjectDao.getAlphabetizedProjects().observeForever(new Observer<List<Project>>() {
             @Override
             public void onChanged(List<Project> projects) {

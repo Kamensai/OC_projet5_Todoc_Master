@@ -13,19 +13,18 @@ import androidx.room.Query;
 @Dao
 public interface ProjectDao {
 
-        // allowing the insert of the same task multiple times by passing a
-        // conflict resolution strategy
+    // allowing the insert of the same task multiple times by passing a
+    // conflict resolution strategy
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insert(Project project);
 
-        @Insert(onConflict = OnConflictStrategy.IGNORE)
-        void insert(Project project);
+    @Query("SELECT * FROM project_table ORDER BY name ASC")
+    LiveData<List<Project>> getAlphabetizedProjects();
 
-        @Query("SELECT * FROM project_table ORDER BY name ASC")
-        LiveData<List<Project>> getAlphabetizedProjects();
-
-        /**
-        * For test
-         * @return Projects
-        */
-        @Query("SELECT * FROM project_table")
-        List<Project> getAllProjects();
-    }
+    /**
+     * For test
+     * @return Projects
+     */
+    @Query("SELECT * FROM project_table")
+    List<Project> getAllProjects();
+}

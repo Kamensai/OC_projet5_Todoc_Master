@@ -13,7 +13,9 @@ public class SortMethodDef {
     // Enumerate valid values for this interface
     @StringDef({ALPHABETICAL, ALPHABETICAL_INVERTED, OLD_FIRST, RECENT_FIRST, PROJECT_NAME, SORT_METHOD})
     // Create an interface for validating String types
-    public @interface SortMethodStringDef {}
+    public @interface SortMethodStringDef {
+    }
+
     // Declare the constants
     public static final String ALPHABETICAL = "ALPHABETICAL";
     public static final String ALPHABETICAL_INVERTED = "ALPHABETICAL_INVERTED";

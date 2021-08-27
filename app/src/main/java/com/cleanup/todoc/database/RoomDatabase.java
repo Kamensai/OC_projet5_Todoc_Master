@@ -4,10 +4,10 @@ import android.content.Context;
 
 import com.cleanup.todoc.App;
 import com.cleanup.todoc.R;
-import com.cleanup.todoc.model.Project;
-import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.database.dao.ProjectDao;
 import com.cleanup.todoc.database.dao.TaskDao;
+import com.cleanup.todoc.model.Project;
+import com.cleanup.todoc.model.Task;
 
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -21,6 +21,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 @Database(entities = {Task.class, Project.class}, version = 1, exportSchema = false)
 public abstract class RoomDatabase extends androidx.room.RoomDatabase {
     public abstract TaskDao taskDao();
+
     public abstract ProjectDao projectDao();
 
     private static volatile RoomDatabase INSTANCE;
@@ -50,20 +51,20 @@ public abstract class RoomDatabase extends androidx.room.RoomDatabase {
             // comment out the following block
             databaseWriteExecutor.execute(() -> {
                 // Populate the database in the background.
-                // If you want to start with more tasks, just add them.
+                // If you want to start with more tasks or projects, just add them.
                 TaskDao taskDao = INSTANCE.taskDao();
                 ProjectDao projectDao = INSTANCE.projectDao();
 
-                Task tasko = new Task( 2L, App.getRes().getString(R.string.project_name_Lucidia), App.getRes().getString(R.string.task_trash), new Date().getTime());
+                Task tasko = new Task(2L, App.getRes().getString(R.string.project_name_Lucidia), App.getRes().getString(R.string.task_trash), new Date().getTime());
                 taskDao.insert(tasko);
 
-                Project project = new Project( App.getRes().getString(R.string.project_name_Tartampion), 0xFFEADAD1);
+                Project project = new Project(App.getRes().getString(R.string.project_name_Tartampion), 0xFFEADAD1);
                 projectDao.insert(project);
 
-                Project project1 = new Project( App.getRes().getString(R.string.project_name_Lucidia), 0xFFB4CDBA);
+                Project project1 = new Project(App.getRes().getString(R.string.project_name_Lucidia), 0xFFB4CDBA);
                 projectDao.insert(project1);
 
-                Project project2 = new Project( App.getRes().getString(R.string.project_name_Circus), 0xFFA3CED2);
+                Project project2 = new Project(App.getRes().getString(R.string.project_name_Circus), 0xFFA3CED2);
                 projectDao.insert(project2);
 
             });

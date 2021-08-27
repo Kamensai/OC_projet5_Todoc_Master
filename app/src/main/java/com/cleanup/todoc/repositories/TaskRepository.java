@@ -2,9 +2,9 @@ package com.cleanup.todoc.repositories;
 
 import android.app.Application;
 
-import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.database.RoomDatabase;
 import com.cleanup.todoc.database.dao.TaskDao;
+import com.cleanup.todoc.model.Task;
 
 import java.util.List;
 
@@ -20,8 +20,6 @@ public class TaskRepository {
     public TaskRepository(Application application) {
         RoomDatabase db = RoomDatabase.getDatabase(application);
         mTaskDao = db.taskDao();
-        // mAllTasks = mTaskDao.getAlphabetizedWords();
-        // mAllProjects = mTaskDao.getAlphabetizedProjects();
     }
 
     // Room executes all queries on a separate thread.
@@ -30,7 +28,7 @@ public class TaskRepository {
         return mAllTasks;
     }
 
-    public void getTasks(){
+    public void getTasks() {
         mTaskDao.getAlphabetizedTasks().observeForever(new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {

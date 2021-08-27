@@ -12,9 +12,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleanup.todoc.R;
+import com.cleanup.todoc.SortMethodDef;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
-import com.cleanup.todoc.SortMethodDef;
 
 import java.util.Date;
 import java.util.List;
@@ -109,12 +109,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         // Update the cached copy of the tasks in the adapter.
-        // mTaskViewModel.getAllTasks().observe(this, adapter::updateTasks);
 
         mMainActivityViewModel.getAllTasksLiveData().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
-                //initList(tasks);
                 updateTasks(tasks);
             }
         });
@@ -173,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public void onDeleteTask(Task task) {
         mMainActivityViewModel.delete(task);
-        // updateTasks();
     }
 
     /**
@@ -243,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void addTask(@NonNull Task task) {
         mMainActivityViewModel.insert(task);
-        // updateTasks();
     }
 
     /**
@@ -315,31 +311,4 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         super.onSaveInstanceState(out);
         out.putString(SORT_METHOD, sortMethod);
     }
-/*
-    /**
-     * List of all possible sort methods for task
-
-     private enum SortMethod {
-        /**
-         * Sort alphabetical by name
-         */
-       /* ALPHABETICAL,
-        /**
-         * Inverted sort alphabetical by name
-         */
-        /*ALPHABETICAL_INVERTED,
-        /**
-         * Lastly created first
-         */
-        /*RECENT_FIRST,
-        /**
-         * First created first
-         */
-       /* OLD_FIRST,
-        /**
-         * No sort
-         */
-       /* NONE
-    }*/
-
 }

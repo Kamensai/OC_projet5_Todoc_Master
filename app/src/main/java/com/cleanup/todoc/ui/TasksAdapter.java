@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cleanup.todoc.R;
+import com.cleanup.todoc.SortMethodDef;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
-import com.cleanup.todoc.SortMethodDef;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -23,10 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * <p>Adapter which handles the list of tasks to display in the dedicated RecyclerView.</p>
- *
  * @author Gaëtan HERFRAY
  */
-public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHolder>{
+public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHolder> {
     /**
      * The list of tasks the adapter deals with
      */
@@ -44,9 +43,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
     /**
      * Instantiates a new TasksAdapter.
-     *
      */
-    TasksAdapter( @NonNull final DeleteTaskListener deleteTaskListener) {
+    TasksAdapter(@NonNull final DeleteTaskListener deleteTaskListener) {
         this.deleteTaskListener = deleteTaskListener;
     }
 
@@ -58,7 +56,6 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
     /**
      * Updates the list of tasks the adapter deals with.
-     *
      * @param tasks the list of tasks the adapter deals with to set
      */
     void updateAndSortTasks(@NonNull final List<Task> tasks, @SortMethodDef.SortMethodStringDef String sortMethod) {
@@ -67,8 +64,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         notifyDataSetChanged();
     }
 
-    void sortTasks(@SortMethodDef.SortMethodStringDef String sortMethod){
-        if(!mTasks.isEmpty()) {
+    void sortTasks(@SortMethodDef.SortMethodStringDef String sortMethod) {
+        if (!mTasks.isEmpty()) {
             switch (sortMethod) {
                 case SortMethodDef.ALPHABETICAL:
                     Collections.sort(mTasks, new Task.TaskAZComparator());
@@ -85,40 +82,12 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
                 case SortMethodDef.PROJECT_NAME:
                     Collections.sort(mTasks, Task.taskProjectNameComparator);
                     break;
-                    //mTasks = getTasksByProject(mSortMethod);
-                    //mTasks.stream().filter(task -> Objects.requireNonNull(task.getProject(projects)).getName().equals(mSortMethod)).forEach((task -> mTasks.add(task)));
-                                //removeIf(task -> !Objects.requireNonNull(task.getProject(projects)).getName().equals(mSortMethod));
-                //case "LUCIDIA":
-                    //Collections.sort(mTasks, Task.taskProjectNameComparator);
-
-                    //mSortMethod = LUCIDIA;
-                    //mTasks = getTasksByProject(mSortMethod);
-                       // mTasks.stream().filter(task -> Objects.requireNonNull(task.getProject(projects)).getName().equals(mSortMethod)).forEach((task -> mTasks.add(task)));
-                //case "TARTAMPION":
-                    //Collections.sort(mTasks, Task.taskProjectNameComparator);
-
-                    //mSortMethod = TARTAMPION;
-                    //mTasks = getTasksByProject(mSortMethod);
-                    // mTasks.stream().filter(task -> Objects.requireNonNull(task.getProject(projects)).getName().equals(mSortMethod)).forEach((task -> mTasks.add(task)));
-
-                default:break;
+                default:
+                    break;
             }
             notifyDataSetChanged();
         }
     }
-/*
-    public List<Task> getTasksByProject(String projectChosen) {
-        List<Task> mListByProject = new ArrayList<>();
-        for (int i = 0; i < mTasks.size(); i++) {
-            Task task = mTasks.get(i);
-            if (projectChosen.equalsIgnoreCase(Objects.requireNonNull(task.getProject(projects)).getName())) {
-                mListByProject.add(task);
-            }
-        }
-        return mListByProject;
-    }
-
- */
 
     @NonNull
     @Override
@@ -131,7 +100,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     public void onBindViewHolder(@NonNull TaskViewHolder taskViewHolder, int position) {
         final Task task = mTasks.get(position);
         final Project project = getProjectById(task.getProjectId());
-        taskViewHolder.bind(task,project);
+        taskViewHolder.bind(task, project);
     }
 
     @Nullable
@@ -154,7 +123,6 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     public interface DeleteTaskListener {
         /**
          * Called when a task needs to be deleted.
-         *
          * @param task the task that needs to be deleted
          */
         void onDeleteTask(Task task);
@@ -162,7 +130,6 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
     /**
      * <p>ViewHolder for task items in the tasks list</p>
-     *
      * @author Gaëtan HERFRAY
      */
     class TaskViewHolder extends RecyclerView.ViewHolder {
@@ -193,8 +160,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
         /**
          * Instantiates a new TaskViewHolder.
-         *
-         * @param itemView the view of the task item
+         * @param itemView           the view of the task item
          * @param deleteTaskListener the listener for when a task needs to be deleted to set
          */
         TaskViewHolder(@NonNull View itemView, @NonNull DeleteTaskListener deleteTaskListener) {
@@ -220,9 +186,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
         /**
          * Binds a task to the item view.
-         *
-         * @param task the task to bind in the item view
-         * @param project
+         * @param task    the task to bind in the item view
+         * @param project the project to bind in the item view
          */
         void bind(Task task, Project project) {
             lblTaskName.setText(task.getName());
