@@ -3,40 +3,34 @@ package com.cleanup.todoc.ui;
 
 import android.app.Application;
 
-import com.cleanup.todoc.ProjectRepository;
-import com.cleanup.todoc.TaskRepository;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.repositories.ProjectRepository;
+import com.cleanup.todoc.repositories.TaskRepository;
 
 import java.util.List;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
-    private TaskRepository mTaskRepository;
+    private final TaskRepository mTaskRepository;
 
-    private ProjectRepository mProjectRepository;
+    private final ProjectRepository mProjectRepository;
 
 
-    private MutableLiveData<List<Task>> updateTasks = new MutableLiveData<>();
+    private final MutableLiveData<List<Task>> updateTasks = new MutableLiveData<>();
 
-    private MutableLiveData<List<Project>> updateProjects = new MutableLiveData<>();
-
-    private MediatorLiveData<List<Task>> mListMediatorLiveData = new MediatorLiveData<>();
-
-    //private final LiveData<List<Task>> mAllTasks;
+    private final MutableLiveData<List<Project>> updateProjects = new MutableLiveData<>();
 
     public MainActivityViewModel(Application application) {
         super(application);
         mTaskRepository = new TaskRepository(application);
         mProjectRepository = new ProjectRepository(application);
-        // mAllTasks = mRepository.getAllTasks();
-        // mAllProjects = mRepository.getAllProjects();
+
         mProjectRepository.getAllProjectsLiveData().observeForever(new Observer<List<Project>>() {
             @Override
             public void onChanged(List<Project> projects) {
@@ -51,18 +45,16 @@ public class MainActivityViewModel extends AndroidViewModel {
         });
     }
 
-   // public LiveData<List<Task>> getAllTasks() { return mAllTasks; }
-
-    public void getTasks(){
+    public void getTasks() {
         mTaskRepository.getTasks();
     }
 
-    public void getProjects(){
+    public void getProjects() {
         mProjectRepository.getProjects();
     }
 
 
-    public LiveData<List<Project>> getAllProjectsLiveData(){
+    public LiveData<List<Project>> getAllProjectsLiveData() {
         return updateProjects;
     }
 
@@ -70,7 +62,11 @@ public class MainActivityViewModel extends AndroidViewModel {
         return updateTasks;
     }
 
-    public void insert(Task task) { mTaskRepository.insert(task); }
+    public void insert(Task task) {
+        mTaskRepository.insert(task);
+    }
 
-    public void delete(Task task) { mTaskRepository.remove(task); }
+    public void delete(Task task) {
+        mTaskRepository.remove(task);
+    }
 }

@@ -1,4 +1,4 @@
-package com.cleanup.todoc.service;
+package com.cleanup.todoc.database.dao;
 
 import com.cleanup.todoc.model.Task;
 

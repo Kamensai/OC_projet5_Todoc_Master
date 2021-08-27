@@ -15,10 +15,12 @@ public class App extends Application {
         res = getResources();
     }
 
+    // Help to get AppInstance anywhere in the code
     public static App getInstance() {
         return mInstance;
     }
 
+    // Help to get AppResources anywhere in the code (used here in the database)
     public static Resources getRes() {
         return res;
     }
